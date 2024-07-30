@@ -1,0 +1,44 @@
+version: "3.8"  # Вказує версію формату файлу Docker Compose
+
+services:  # Оголошує сервіси, які будуть запущені
+  pg:  # Ім'я сервісу для PostgreSQL
+    image: postgres:latest  # Використовує офіційний образ PostgreSQL
+    container_name: pg-local  # Вказує назву контейнера
+    restart: always  # Контейнер автоматично перезапускається у разі збою
+    ports:
+      - "5432:5432"  # Публікує порт 5432 контейнера на порт 5432 локальної машини
+    environment:  # Змінні середовища для налаштування бази даних
+      POSTGRES_DB: "XXX"  # Назва бази даних, яка буде створена
+      POSTGRES_USER: postgres  # Ім'я користувача PostgreSQL
+      POSTGRES_PASSWORD: postgres  # Пароль для користувача PostgreSQL
+
+  pgadmin:  # Ім'я сервісу для PgAdmin
+    image: dpage/pgadmin4  # Використовує офіційний образ PgAdmin
+    container_name: pgadmin-local  # Вказує назву контейнера
+    restart: always  # Контейнер автоматично перезапускається у разі збою
+    ports:
+      - "5050:80"  # Публікує порт 80 контейнера на порт 5050 локальної машини
+    environment:  # Змінні середовища для налаштування PgAdmin
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com  # Email для входу в PgAdmin
+      PGADMIN_DEFAULT_PASSWORD: postgres  # Пароль для входу в PgAdmin
+
+
+# Docker Plan:
+#
+# 1. Запустіть Docker Desktop (Windows).
+# 2. Відкрийте термінал і перейдіть до каталогу з файлом docker-compose.yml.
+# 3. Запустіть контейнери, набравши команду:
+#    docker-compose up -d
+# 4. Перейдіть у веб-браузер і зайдіть на:
+#    http://localhost:5050
+# 5. Увійдіть у pgAdmin за допомогою облікових даних:
+#    - Email: postgres@postgres.com
+#    - Password: postgres
+# 6. В pgAdmin виберіть "Create" -> "Server" і введіть наступну інформацію для підключення:
+#    - **Host:** pg (або `localhost`)
+#    - **Port:** 5432
+#    - **Maintenance Database:** XXX
+#    - **Username:** postgres
+#    - **Password:** postgres
+# 7. Щоб зупинити контейнери, використовуйте команду:
+#    docker-compose down
